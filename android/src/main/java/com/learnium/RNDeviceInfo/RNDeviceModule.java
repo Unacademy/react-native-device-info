@@ -70,7 +70,6 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
   private final DeviceIdResolver deviceIdResolver;
   private BroadcastReceiver receiver;
   private BroadcastReceiver headphoneConnectionReceiver;
-  private RNInstallReferrerClient installReferrerClient;
 
   private double mLastBatteryLevel = -1;
   private String mLastBatteryState = "";
@@ -84,7 +83,6 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
     super(reactContext);
     this.deviceTypeResolver = new DeviceTypeResolver(reactContext);
     this.deviceIdResolver = new DeviceIdResolver(reactContext);
-    this.installReferrerClient = new RNInstallReferrerClient(reactContext.getBaseContext());
   }
 
   @Override
@@ -635,17 +633,6 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void getInstallerPackageName(Promise p) { p.resolve(getInstallerPackageNameSync()); }
-
-  @ReactMethod(isBlockingSynchronousMethod = true)
-  public double getFirstInstallTimeSync() {
-    try {
-      return (double)getPackageInfo().firstInstallTime;
-    } catch (Exception e) {
-      return -1;
-    }
-  }
-  @ReactMethod
-  public void getFirstInstallTime(Promise p) { p.resolve(getFirstInstallTimeSync()); }
 
   @ReactMethod(isBlockingSynchronousMethod = true)
   public double getLastUpdateTimeSync() {
