@@ -70,7 +70,6 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
   private final DeviceIdResolver deviceIdResolver;
   private BroadcastReceiver receiver;
   private BroadcastReceiver headphoneConnectionReceiver;
-  private RNInstallReferrerClient installReferrerClient;
 
   private double mLastBatteryLevel = -1;
   private String mLastBatteryState = "";
@@ -84,7 +83,6 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
     super(reactContext);
     this.deviceTypeResolver = new DeviceTypeResolver(reactContext);
     this.deviceIdResolver = new DeviceIdResolver(reactContext);
-    this.installReferrerClient = new RNInstallReferrerClient(reactContext.getBaseContext());
   }
 
   @Override
@@ -608,14 +606,6 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
   }
   @ReactMethod
   public void getAvailableLocationProviders(Promise p) { p.resolve(getAvailableLocationProvidersSync()); }
-
-  @ReactMethod(isBlockingSynchronousMethod = true)
-  public String getInstallReferrerSync() {
-    SharedPreferences sharedPref = getReactApplicationContext().getSharedPreferences("react-native-device-info", Context.MODE_PRIVATE);
-    return sharedPref.getString("installReferrer", Build.UNKNOWN);
-  }
-  @ReactMethod
-  public void getInstallReferrer(Promise p) { p.resolve(getInstallReferrerSync()); }
 
   private PackageInfo getPackageInfo() throws Exception {
     return getReactApplicationContext().getPackageManager().getPackageInfo(getReactApplicationContext().getPackageName(), 0);
